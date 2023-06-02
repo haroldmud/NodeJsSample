@@ -22,7 +22,8 @@ const fileModifier =  require('fs');
 // })
 
 
-// creating directoriesgit in
+// creating directories
+
 fileModifier.mkdir('./assets', (err)=>{
   if(err){
     console.log('an error occured')
