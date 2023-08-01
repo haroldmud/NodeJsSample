@@ -47,3 +47,15 @@ if(fileModifier.existsSync('./doc/blog2.txt')){
     console.log('file deleted successfully')
   })
 }
+
+// create ReadStream
+const readBlog = fileModifier.createReadStream('./doc/blog2.txt', {encoding: 'utf-8'})
+const writeBlog = fileModifier.createWriteStream('./doc/blog23.txt')
+
+
+readBlog.on('data', (chunk)=>{
+  writeBlog.write('\n_____________NEW CHUNK________\n');
+  writeBlog.write(chunk)
+});
+// readBlog.pipe(writeBlog) this feature copies one file content into the other.
+// console.log(readBlog2)
