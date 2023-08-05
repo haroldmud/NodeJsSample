@@ -1,21 +1,20 @@
-const http = require('http');
-const fs = require('fs');
+const http = require("http");
+const file = require("fs");
 
-const server =  http.createServer((req, res )=>{
-  console.log(req);
-  
-  //step1: define the type of the content we'll send as
-  //       a response. this can be a text, an HTML, etc 
-  res.setHeader('content-type', 'text/plain')
+const server = http.createServer((req, res) => {
+  res.setHeader("content-type", "text/HTML");
 
-  //step2: Write the content according to its type
-  res.write('Hello, world')
-
-  //step3: we end the response which then sends it to the
-  //       browser
-  res.end()
+  file.readFile("../view/index.html", (err, data) => {
+    if (err) {
+      res.write("<p>AN ERROR OCCUR</p>");
+      res.end()
+    }
+    res.write(data);
+    res.end();
+  });
+  console.log("Response sent successfully");
 });
 
-server.listen(8080, 'localhost', ()=>{
-  console.log('waiting for the first listened server request')
-})
+server.listen(8080, "localhost", () => {
+  console.log("waiting for the first listened server request");
+});
