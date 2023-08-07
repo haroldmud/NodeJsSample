@@ -4,10 +4,6 @@ const path = require('path')
 // express app
 const app = express( )
 
-
-//refister the view engine
-app.set('view engine', 'ejs');
-
 // listen for requests
 app.listen(3000, ()=>{
   console.log('the request has been made')
