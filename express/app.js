@@ -18,6 +18,11 @@ app.get('/about', (req, res)=>{
 })
 // the "__dirname" refers to the whole system directory
 
-app. get ('/about-us', (req, res) => {
+app.get ('/about-us', (req, res) => {
   res.redirect('/about')
 });
+
+app.use((req, res)=> {
+  const errorPath = path.join('../view/404.html', __dirname)
+  res.status(404).sendFile(errorPath)
+})
