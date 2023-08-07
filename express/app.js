@@ -1,15 +1,23 @@
-const express = require('express');// returns a function 
+const express = require('express');// returns a function
+const path = require('path')
 
-//express app
 const app = express( )
 
-//listen for requests. it knows that we have to use the 
-// localhost so we won't have to add it again.
-app.listen(3000);
+app.listen(3000, ()=>{
+  console.log('the request has been made')
+});
 
-//if you wanna listen to a get request on a accurate URL
 app.get('/', (req, res)=>{
-// we are not having the setHeader, express's automatic
-  res.send('<p>Home page</p>')
-
+  const homePath = path.join(__dirname, '../view/index.html')
+  res.sendFile(homePath);
 })
+
+app.get('/about', (req, res)=>{
+  const aboutPath = path.join(__dirname, '../view/about.html')
+  res.sendFile(aboutPath);
+})
+// the "__dirname" refers to the whole system directory
+
+app. get ('/about-us', (req, res) => {
+  res.redirect('/about')
+});
