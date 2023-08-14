@@ -21,18 +21,40 @@ app.use(express.static('doc'));
 
 //mongoose and mongo sandbox routes
 app.get('/add-blog', (req, res)=>{
+//whenever this blog variable is updated, mongoose adds a new object based on thee change
   const blog = new Blog({
-    title:'My new blog',
+    title:'My another new blog',
     snippet:'About my new blog',
     body:'more aboutmy new blog'
   });
 
-  blog.save()
+  blog.save()//Mongoose method used to save a document to the database.
+    .then((result)=>{
+      res.send(result)//Express method used to send a response back to the client
+    })
+    .catch((err)=>{
+      res.status(500).send(err);
+    })
+});
+
+app.get('/all-blogs', (req, res) => {
+  Blog.find()// works like the get method, displays all the added documents above
+    .sort({creeateAt: -1 })// means it will get from the oldest to the newest
     .then((result)=>{
       res.send(result)
     })
     .catch((err)=>{
-      console.error(err)
+      res.status(500).send(err)
+    })
+})
+
+app.get('/single-blog', (req, res) => {
+  Blog.findById('64d9fbefbe06169555263f06')
+    .then((result)=>{
+      res.send(result)
+    })
+    .catch((err)=>{
+      res.status(500).send(err)
     })
 })
 
