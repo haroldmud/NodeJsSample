@@ -8,7 +8,11 @@
   <body>
     <%- include('./partials/header.ejs')%>
     <div class="blogs content">
-      <h2>A11 Blogs</h2>
+      <h2>All Blogs</h2>
+      <% blogs.map((item)=> { %>
+        <h1><%= item.title %></h1>
+        <p><%= item.snippet%></p>
+      <%})%>
     </div>
   </body>
 </html>

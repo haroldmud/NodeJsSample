@@ -1,14 +1,42 @@
 const express = require('express');
 const http = require('http')
-const app = express()
+const app = express();
+const Blog = require('./models/blogs')
 
-// registering the view engine
+//storing mongoose
+const mongoose = require('mongoose')
+//connect to mongodb
+const dbURI = 'mongodb+srv://xo_2:test1234@xo.6cb5vsr.mongodb.net/XO?retryWrites=true&w=majority'
+mongoose.connect(dbURI)
+  .then(()=> console.log('connected to db successfully'))
+  .catch((err)=> console.log(err))
+//register view engine
 app.set('view engine', 'ejs');
 
 app.listen('8080', ()=> {
   console.log('the request has been sent')
 });
+//middleware and static files 
+app.use(express.static('doc'));
 
+//mongoose and mongo sandbox routes
+app.get('/add-blog', (req, res)=>{
+  const blog = new Blog({
+    title:'My new blog',
+    snippet:'About my new blog',
+    body:'more aboutmy new blog'
+  });
+
+  blog.save()
+    .then((result)=>{
+      res.send(result)
+    })
+    .catch((err)=>{
+      console.error(err)
+    })
+})
+
+//routes
 app.get('/', (req, res)=>{
   const blogs = [
   {title: 'Yoshi finds eggs', snippet: 'Lorem ipsum dolor sit amet consectetur'}, 
