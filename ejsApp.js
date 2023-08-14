@@ -50,7 +50,7 @@ app.get('/all-blogs', (req, res) => {
     res.status(500).send(err)
   })
 })
-
+//HERE IS THE SCOPE OF THIS BRANCH
 app.post('/blogs', (req, res)=>{
   const blog = new Blog(req.body)
   blog.save()
@@ -61,7 +61,7 @@ app.post('/blogs', (req, res)=>{
       res.status(500).send(err)
     })
 })
-
+//HERE IS THE SCOPE OF THIS BRANCH
 app.get('/single-blog', (req, res) => {
   Blog.findById('64d9fbefbe06169555263f06')
     .then((result)=>{
