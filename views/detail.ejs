@@ -5,12 +5,10 @@
     <%- include('./partials/header.ejs')%>
     <div class="blogs content">
       <h2>All Blogs</h2>
-      <% result.map((item)=> { %>
-      <h1><%= item.title %></h1>
-      <p><%= item.snippet%></p>
-      <a href="/blogs/<%=item.id%>"><button class="single">more</button></a><br /><br />
+      <h1><%= blog.title %></h1>
+      <p><%= blog.snippet%></p>
+      <a href="/"><button class="single">back</button></a><br /><br />
       <hr />
-      <%})%>
     </div>
     <%- include('./partials/footer.ejs')%>
   </body>

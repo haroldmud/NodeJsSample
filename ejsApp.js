@@ -1,100 +1,116 @@
-const express = require('express');
-const http = require('http')
+const express = require("express");
+const http = require("http");
 const app = express();
-const Blog = require('./models/blogs')
+const Blog = require("./models/blogs");
 
 //storing mongoose
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 //connect to mongodb
-const dbURI = 'mongodb+srv://xo_2:test1234@xo.6cb5vsr.mongodb.net/XO?retryWrites=true&w=majority'
-mongoose.connect(dbURI)
-  .then(()=> console.log('connected to db successfully'))
-  .catch((err)=> console.log(err))
+const dbURI =
+  "mongodb+srv://xo_2:test1234@xo.6cb5vsr.mongodb.net/XO?retryWrites=true&w=majority";
+mongoose
+  .connect(dbURI)
+  .then(() => console.log("connected to db successfully"))
+  .catch((err) => console.log(err));
 //register view engine
-app.set('view engine', 'ejs');
+app.set("view engine", "ejs");
 
-app.listen('8080', ()=> {
-  console.log('the request has been sent')
+app.listen("8080", () => {
+  console.log("the request has been sent");
 });
-//middleware and static files 
-app.use(express.static('doc'));
-app.use(express.urlencoded({ extended: true }));//POST method middleware that stores
+//middleware and static files
+app.use(express.static("doc"));
+app.use(express.urlencoded({ extended: true })); //POST method middleware that stores
 //a form((name attribute)) data in the req's 'body' property after submitting a form.
 
-
 //mongoose and mongo sandbox routes
-app.get('/add-blog', (req, res)=>{
+app.get("/add-blog", (req, res) => {
   //whenever this blog variable is updated, mongoose adds a new object based on thee change
   const blog = new Blog({
-    title:'My another new blog',
-    snippet:'About my new blog',
-    body:'more aboutmy new blog'
+    title: "My another new blog",
+    snippet: "About my new blog",
+    body: "more aboutmy new blog",
   });
-  
-  blog.save()//Mongoose method used to save a document to the database.
-  .then((result)=>{
-    res.send(result)//Express method used to send a response back to the client
-  })
-  .catch((err)=>{
-    res.status(500).send(err);
-  })
+
+  blog
+    .save() //Mongoose method used to save a document to the database.
+    .then((result) => {
+      res.send(result); //Express method used to send a response back to the client
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
 });
 
-app.get('/all-blogs', (req, res) => {
-  Blog.find()// works like the get method, displays all the added documents above
-  .sort({creeateAt: -1 })// means it will get from the oldest to the newest
-  .then((result)=>{
-    res.send(result)
-  })
-  .catch((err)=>{
-    res.status(500).send(err)
-  })
-})
-//HERE IS THE SCOPE OF THIS BRANCH
-app.post('/blogs', (req, res)=>{
-  const blog = new Blog(req.body)
+app.get("/all-blogs", (req, res) => {
+  Blog.find() // works like the get method, displays all the added documents above
+    .sort({ creeateAt: -1 }) // means it will get from the oldest to the newest
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
+
+app.post("/blogs", (req, res) => {
+  const blog = new Blog(req.body);
+  //body's the req's property that contains the
+  //form values after submission
   blog.save()
-    .then((result)=>{
-      res.send(result)
+    .then((result) => {
+      res.send(result);
     })
-    .catch((err)=>{
-      res.status(500).send(err)
-    })
-})
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
+
 //HERE IS THE SCOPE OF THIS BRANCH
-app.get('/single-blog', (req, res) => {
-  Blog.findById('64d9fbefbe06169555263f06')
+app.get("/blogs/:id", (req, res) => {
+  const id = req.params.id;
+  Blog.findById(id)
     .then((result)=>{
-      res.send(result)
+      res.render('detail', {title: 'Blog Detail', blog:result})
     })
     .catch((err)=>{
       res.status(500).send(err)
     })
-})
+});
+//HERE IS THE SCOPE OF THIS BRANCH
+app.get("/single-blog", (req, res) => {
+  Blog.findById("64d9fbefbe06169555263f06")
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
 
 //routes
-app.get('/', (req, res)=>{
+app.get("/", (req, res) => {
   Blog.find()
-    .then((result)=>{
-      res.render('index', {title: 'Home page', result })
+    .then((result) => {
+      res.render("index", { title: "Home page", result });
     })
-    .catch((err)=>{
-      res.status(500).send(err)
-    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
 });
 
-app.get('/about', (req, res)=>{
-  res.render('about', {title: 'About page'})
+app.get("/about", (req, res) => {
+  res.render("about", { title: "About page" });
 });
 
-app.get('/blogs/create', (req, res)=>{
-  res.render('create', {title: 'Create Blog page'})
+app.get("/blogs/create", (req, res) => {
+  res.render("create", { title: "Create Blog page" });
 });
 
-app.use((res,req)=>{
-  res.render('404', {title: 'Error  page'})
-})
+app.use((req, res) => {
+  res.render("404", { title: "Error  page" });
+});
 
-http.createServer(()=>{
-  console.log('the response has been provided')
-})
+http.createServer(() => {
+  console.log("the response has been provided");
+});
