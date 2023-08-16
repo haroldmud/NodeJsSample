@@ -2,6 +2,7 @@ const express = require("express");
 const http = require("http");
 const app = express();
 const Blog = require("./models/blogs");
+const blogRoutes = require('./routes/blogRoute')
 
 //storing mongoose
 const mongoose = require("mongoose");
@@ -53,45 +54,6 @@ app.get("/all-blogs", (req, res) => {
     });
 });
 
-app.post("/blogs", (req, res) => {
-  const blog = new Blog(req.body);
-  //body's the req's property that contains the
-  //form values after submission
-  blog
-    .save()
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
-});
-
-app.get("/blogs/:id", (req, res) => {
-  const id = req.params.id;
-  Blog.findById(id)
-    .then((result) => {
-      res.render("detail", { title: "Blog Detail", blog: result });
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
-});
-
-//HERE IS THE SCOPE OF THIS BRANCH
-app.delete("/blogs/:id", (req, res) => {
-  const id = req.params.id;
-  Blog.findByIdAndDelete(id)
-    .then(() => {
-      res.json({ redirect: "/blogs" });
-      //this acts like an updater of the main data collection
-    })
-    .catch((err)=>{
-      console.error(err)    
-    }
-  )
-});
-//HERE IS THE SCOPE OF THIS BRANCH
 app.get("/single-blog", (req, res) => {
   Blog.findById("64d9fbefbe06169555263f06")
     .then((result) => {
@@ -102,24 +64,12 @@ app.get("/single-blog", (req, res) => {
     });
 });
 
-//routes
-app.get("/blogs", (req, res) => {
-  Blog.find()
-    .then((result) => {
-      res.render("index", { title: "Home page", result });
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
-});
-
 app.get("/about", (req, res) => {
   res.render("about", { title: "About page" });
 });
+//blogs route
+app.use('/blogs',blogRoutes)
 
-app.get("/blogs/create", (req, res) => {
-  res.render("create", { title: "Create Blog page" });
-});
 
 app.use((req, res) => {
   res.render("404", { title: "Error  page" });
