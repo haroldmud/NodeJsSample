@@ -57,7 +57,8 @@ app.post("/blogs", (req, res) => {
   const blog = new Blog(req.body);
   //body's the req's property that contains the
   //form values after submission
-  blog.save()
+  blog
+    .save()
     .then((result) => {
       res.send(result);
     })
@@ -66,16 +67,29 @@ app.post("/blogs", (req, res) => {
     });
 });
 
-//HERE IS THE SCOPE OF THIS BRANCH
 app.get("/blogs/:id", (req, res) => {
   const id = req.params.id;
   Blog.findById(id)
-    .then((result)=>{
-      res.render('detail', {title: 'Blog Detail', blog:result})
+    .then((result) => {
+      res.render("detail", { title: "Blog Detail", blog: result });
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
+
+//HERE IS THE SCOPE OF THIS BRANCH
+app.delete("/blogs/:id", (req, res) => {
+  const id = req.params.id;
+  Blog.findByIdAndDelete(id)
+    .then(() => {
+      res.json({ redirect: "/blogs" });
+      //this acts like an updater of the main data collection
     })
     .catch((err)=>{
-      res.status(500).send(err)
-    })
+      console.error(err)    
+    }
+  )
 });
 //HERE IS THE SCOPE OF THIS BRANCH
 app.get("/single-blog", (req, res) => {
@@ -89,7 +103,7 @@ app.get("/single-blog", (req, res) => {
 });
 
 //routes
-app.get("/", (req, res) => {
+app.get("/blogs", (req, res) => {
   Blog.find()
     .then((result) => {
       res.render("index", { title: "Home page", result });
