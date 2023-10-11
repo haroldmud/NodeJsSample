@@ -1,3 +1,3 @@
-rash Course tutorial series on The Net Ninja YouTube channel.
+ash Course tutorial series on The Net Ninja YouTube channel.
 
 # node-crash-course
