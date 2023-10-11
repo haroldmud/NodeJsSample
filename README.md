@@ -1,3 +1,3 @@
-series on The Net Ninja YouTube channel.
+eries on The Net Ninja YouTube channel.
 
 # node-crash-course
