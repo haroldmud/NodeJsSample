@@ -1,3 +1,3 @@
-et Ninja YouTube channel.
+t Ninja YouTube channel.
 
 # node-crash-course
